@@ -9,6 +9,100 @@
   <title>Runstore</title>
 
   <link rel="stylesheet" href="style.css">
+
+  <style>
+
+    body{
+      background:#000;
+      color:white;
+      font-family:Arial;
+      margin:0;
+      padding:0;
+    }
+
+    header{
+      text-align:center;
+      font-size:40px;
+      font-weight:bold;
+      padding:30px;
+      border-bottom:1px solid #222;
+    }
+
+    .container{
+      padding:20px;
+    }
+
+    .search-box{
+      width:100%;
+      padding:18px;
+      border-radius:20px;
+      border:3px solid orange;
+      background:#111;
+      color:white;
+      font-size:22px;
+      box-sizing:border-box;
+      margin-bottom:30px;
+    }
+
+    h2{
+      font-size:60px;
+      margin-bottom:30px;
+    }
+
+    .app-card{
+      background:#111;
+      border-radius:30px;
+      padding:20px;
+      margin-bottom:30px;
+      cursor:pointer;
+    }
+
+    .app-card img{
+      width:100%;
+      height:280px;
+      object-fit:cover;
+      border-radius:20px;
+    }
+
+    .app-card h3{
+      font-size:45px;
+      margin-top:20px;
+      margin-bottom:10px;
+    }
+
+    .app-card p{
+      font-size:30px;
+      color:#ccc;
+    }
+
+    .download-btn{
+
+      display:inline-block;
+      margin-top:20px;
+      padding:18px 35px;
+      background:#00bfff;
+      color:white;
+      text-decoration:none;
+      border-radius:18px;
+      font-size:28px;
+      font-weight:bold;
+
+    }
+
+    button{
+
+      padding:18px 35px;
+      border:none;
+      border-radius:18px;
+      background:#00bfff;
+      color:white;
+      font-size:28px;
+      margin-left:10px;
+
+    }
+
+  </style>
+
 </head>
 <body>
 
@@ -60,23 +154,22 @@ async function loadApps(){
 
     const app = documentItem.data();
 
+    const appData = encodeURIComponent(
+      JSON.stringify(app)
+    );
+
     if(app.featured === "yes"){
 
       featuredApps.innerHTML += `
 
-      <div class="app-card">
+      <div
+      class="app-card"
+      onclick="openDetails('${appData}')"
+      >
 
-        <img
-        src="${app.image}"
-        style="
-        width:100%;
-        height:180px;
-        object-fit:cover;
-        border-radius:12px;
-        margin-bottom:10px;
-        ">
+        <img src="${app.image}">
 
-        <h2>⭐ ${app.name}</h2>
+        <h3>⭐ ${app.name}</h3>
 
         <p>${app.desc}</p>
 
@@ -88,19 +181,14 @@ async function loadApps(){
 
     appsContainer.innerHTML += `
 
-      <div class="app-card">
+      <div
+      class="app-card"
+      onclick="openDetails('${appData}')"
+      >
 
-        <img
-        src="${app.image}"
-        style="
-        width:100%;
-        height:180px;
-        object-fit:cover;
-        border-radius:12px;
-        margin-bottom:10px;
-        ">
+        <img src="${app.image}">
 
-        <h2>${app.name}</h2>
+        <h3>${app.name}</h3>
 
         <p>${app.desc}</p>
 
@@ -113,12 +201,16 @@ async function loadApps(){
           class="download-btn"
           href="${app.link}"
           target="_blank"
+          onclick="event.stopPropagation()"
         >
           Download
         </a>
 
         <button
-          onclick="deleteApp('${documentItem.id}')"
+          onclick="
+          event.stopPropagation();
+          deleteApp('${documentItem.id}')
+          "
         >
           Delete
         </button>
@@ -157,6 +249,18 @@ document
   });
 
 });
+
+window.openDetails = (appData)=>{
+
+  localStorage.setItem(
+    "selectedApp",
+    decodeURIComponent(appData)
+  );
+
+  window.location.href =
+  "details.html";
+
+};
 
 window.deleteApp = async(id)=>{
 
