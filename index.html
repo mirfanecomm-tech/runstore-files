@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+  <title>Runstore</title>
+
+  <link rel="stylesheet"
+  href="css/style.css">
+</head>
+<body>
+
+<header>Runstore</header>
+
+<div class="container">
+
+  <input
+    type="text"
+    id="search"
+    class="search-box"
+    placeholder="Search Apps..."
+  >
+
+  <h2>⭐ Featured Apps</h2>
+
+  <div id="featuredApps"></div>
+
+  <div id="appsContainer"></div>
+
+</div>
+
+<script type="module">
+
+import { db } from './js/firebase.js';
+
+import {
+collection,
+getDocs,
+deleteDoc,
+doc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const appsContainer =
+document.getElementById("appsContainer");
+
+const featuredApps =
+document.getElementById("featuredApps");
+
+async function loadApps(){
+
+  appsContainer.innerHTML = "";
+  featuredApps.innerHTML = "";
+
+  const querySnapshot =
+  await getDocs(collection(db,"apps"));
+
+  querySnapshot.forEach((documentItem)=>{
+
+    const app = documentItem.data();
+
+    if(app.featured === "yes"){
+
+      featuredApps.innerHTML += `
+
+      <div class="app-card">
+
+        <img
+        src="${app.image}"
+        style="
+        width:100%;
+        height:180px;
+        object-fit:cover;
+        border-radius:12px;
+        margin-bottom:10px;
+        ">
+
+        <h2>⭐ ${app.name}</h2>
+
+        <p>${app.desc}</p>
+
+      </div>
+
+      `;
+
+    }
+
+    appsContainer.innerHTML += `
+
+      <div class="app-card">
+
+        <img
+        src="${app.image}"
+        style="
+        width:100%;
+        height:180px;
+        object-fit:cover;
+        border-radius:12px;
+        margin-bottom:10px;
+        ">
+
+        <h2>${app.name}</h2>
+
+        <p>${app.desc}</p>
+
+        <p>
+        Category:
+        <b>${app.category}</b>
+        </p>
+
+        <a
+          class="download-btn"
+          href="${app.link}"
+          target="_blank"
+        >
+          Download
+        </a>
+
+        <button
+          onclick="deleteApp('${documentItem.id}')"
+        >
+          Delete
+        </button>
+
+      </div>
+
+    `;
+
+  });
+
+}
+
+loadApps();
+
+document
+.getElementById("search")
+.addEventListener("input",(e)=>{
+
+  const value =
+  e.target.value.toLowerCase();
+
+  const cards =
+  document.querySelectorAll(".app-card");
+
+  cards.forEach((card)=>{
+
+    const text =
+    card.innerText.toLowerCase();
+
+    if(text.includes(value)){
+      card.style.display = "block";
+    }else{
+      card.style.display = "none";
+    }
+
+  });
+
+});
+
+window.deleteApp = async(id)=>{
+
+  await deleteDoc(doc(db,"apps",id));
+
+  alert("App Deleted");
+
+  loadApps();
+
+};
+
+</script>
+
+</body>
+</html>

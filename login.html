@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Runstore Login</title>
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>Runstore Login</header>
+
+<div class="container">
+
+  <input type="email" id="email" placeholder="Enter Email">
+
+  <input type="password" id="password" placeholder="Enter Password">
+
+  <button id="signupBtn">Signup</button>
+
+  <button id="loginBtn">Login</button>
+
+</div>
+
+<script type="module">
+
+import { auth } from './js/firebase.js';
+
+import {
+createUserWithEmailAndPassword,
+signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const email = document.getElementById("email");
+const password = document.getElementById("password");
+
+document.getElementById("signupBtn")
+.addEventListener("click", async()=>{
+
+  try{
+
+    await createUserWithEmailAndPassword(
+      auth,
+      email.value,
+      password.value
+    );
+
+    alert("Signup Success");
+
+  }catch(error){
+    alert(error.message);
+  }
+
+});
+
+document.getElementById("loginBtn")
+.addEventListener("click", async()=>{
+
+  try{
+
+    await signInWithEmailAndPassword(
+      auth,
+      email.value,
+      password.value
+    );
+
+    alert("Login Success");
+
+    window.location.href = "index.html";
+
+  }catch(error){
+    alert(error.message);
+  }
+
+});
+
+</script>
+
+</body>
+</html>
