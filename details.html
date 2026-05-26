@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>App Details</title>
+
+<link rel="stylesheet"
+href="css/style.css">
+
+</head>
+<body>
+
+<div class="container">
+
+  <div id="appDetails"></div>
+
+</div>
+
+<script>
+
+const app =
+JSON.parse(
+localStorage.getItem("selectedApp")
+);
+
+document.getElementById("appDetails")
+.innerHTML = `
+
+<div class="app-card">
+
+<img
+src="${app.image}"
+style="
+width:100%;
+height:250px;
+object-fit:cover;
+border-radius:14px;
+">
+
+<h1>${app.name}</h1>
+
+<p>${app.desc}</p>
+
+<p>
+Category:
+<b>${app.category}</b>
+</p>
+
+<a
+class="download-btn"
+href="${app.link}"
+target="_blank"
+>
+Install Now
+</a>
+
+</div>
+
+`;
+
+</script>
+
+</body>
+</html>
