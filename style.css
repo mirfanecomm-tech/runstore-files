@@ -2,63 +2,85 @@ body{
   margin:0;
   padding:0;
   background:#0f0f0f;
-  color:white;
   font-family:Arial;
+  color:white;
 }
 
 header{
-  background:#151515;
-  padding:15px;
+  background:#111;
+  padding:20px;
   text-align:center;
-  font-size:22px;
+  font-size:32px;
   font-weight:bold;
   border-bottom:1px solid #333;
 }
 
 .container{
-  padding:15px;
+  padding:20px;
 }
 
-input{
+.search-box{
   width:100%;
-  padding:12px;
-  margin-top:10px;
+  padding:15px;
   border:none;
-  border-radius:10px;
+  outline:none;
+  border-radius:15px;
   background:#1e1e1e;
   color:white;
+  font-size:18px;
+  margin-bottom:20px;
   box-sizing:border-box;
-}
-
-button{
-  width:100%;
-  padding:12px;
-  margin-top:15px;
-  border:none;
-  border-radius:10px;
-  background:#00bcd4;
-  color:white;
-  font-size:16px;
-  font-weight:bold;
+  border:2px solid orange;
 }
 
 .app-card{
-  background:#1a1a1a;
+  background:#1b1b1b;
+  border-radius:20px;
   padding:15px;
-  border-radius:12px;
+  margin-bottom:20px;
+  box-shadow:0 0 10px rgba(0,0,0,0.4);
+}
+
+.app-card img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  border-radius:15px;
+}
+
+.app-card h2{
   margin-top:15px;
+  font-size:28px;
+}
+
+.app-card p{
+  color:#ccc;
+  font-size:18px;
 }
 
 .download-btn{
   display:inline-block;
-  margin-top:10px;
-  padding:10px 15px;
-  background:#00bcd4;
+  background:#00c2ff;
   color:white;
+  padding:12px 25px;
+  border-radius:12px;
   text-decoration:none;
-  border-radius:8px;
+  margin-top:10px;
+  font-weight:bold;
 }
 
-.search-box{
-  margin-bottom:15px;
+button{
+  background:#00c2ff;
+  color:white;
+  border:none;
+  padding:12px 20px;
+  border-radius:12px;
+  margin-top:10px;
+  margin-right:10px;
+  font-size:16px;
+  cursor:pointer;
+}
+
+h2{
+  font-size:34px;
 }
