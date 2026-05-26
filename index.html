@@ -1,107 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-  <meta name="viewport"
-  content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-  <title>Runstore</title>
+<title>Runstore</title>
 
-  <link rel="stylesheet" href="style.css">
+<style>
 
-  <style>
+body{
+  background:#000;
+  color:white;
+  font-family:Arial;
+  margin:0;
+  padding:0;
+}
 
-    body{
-      background:#000;
-      color:white;
-      font-family:Arial;
-      margin:0;
-      padding:0;
-    }
+header{
+  text-align:center;
+  font-size:40px;
+  font-weight:bold;
+  padding:30px;
+  border-bottom:1px solid #222;
+}
 
-    header{
-      text-align:center;
-      font-size:40px;
-      font-weight:bold;
-      padding:30px;
-      border-bottom:1px solid #222;
-    }
+.container{
+  padding:20px;
+}
 
-    .container{
-      padding:20px;
-    }
+.search-box{
+  width:100%;
+  padding:18px;
+  border-radius:20px;
+  border:3px solid orange;
+  background:#111;
+  color:white;
+  font-size:22px;
+  box-sizing:border-box;
+  margin-bottom:30px;
+}
 
-    .search-box{
-      width:100%;
-      padding:18px;
-      border-radius:20px;
-      border:3px solid orange;
-      background:#111;
-      color:white;
-      font-size:22px;
-      box-sizing:border-box;
-      margin-bottom:30px;
-    }
+h2{
+  font-size:60px;
+  margin-bottom:30px;
+}
 
-    h2{
-      font-size:60px;
-      margin-bottom:30px;
-    }
+.app-card{
+  background:#111;
+  border-radius:30px;
+  padding:20px;
+  margin-bottom:30px;
+  cursor:pointer;
+}
 
-    .app-card{
-      background:#111;
-      border-radius:30px;
-      padding:20px;
-      margin-bottom:30px;
-      cursor:pointer;
-    }
+.app-card img{
+  width:100%;
+  height:280px;
+  object-fit:cover;
+  border-radius:20px;
+}
 
-    .app-card img{
-      width:100%;
-      height:280px;
-      object-fit:cover;
-      border-radius:20px;
-    }
+.app-card h3{
+  font-size:45px;
+  margin-top:20px;
+  margin-bottom:10px;
+}
 
-    .app-card h3{
-      font-size:45px;
-      margin-top:20px;
-      margin-bottom:10px;
-    }
+.app-card p{
+  font-size:30px;
+  color:#ccc;
+}
 
-    .app-card p{
-      font-size:30px;
-      color:#ccc;
-    }
+.download-btn{
+  display:inline-block;
+  margin-top:20px;
+  padding:18px 35px;
+  background:#00bfff;
+  color:white;
+  text-decoration:none;
+  border-radius:18px;
+  font-size:28px;
+  font-weight:bold;
+}
 
-    .download-btn{
+button{
+  padding:18px 35px;
+  border:none;
+  border-radius:18px;
+  background:#00bfff;
+  color:white;
+  font-size:28px;
+  margin-left:10px;
+}
 
-      display:inline-block;
-      margin-top:20px;
-      padding:18px 35px;
-      background:#00bfff;
-      color:white;
-      text-decoration:none;
-      border-radius:18px;
-      font-size:28px;
-      font-weight:bold;
-
-    }
-
-    button{
-
-      padding:18px 35px;
-      border:none;
-      border-radius:18px;
-      background:#00bfff;
-      color:white;
-      font-size:28px;
-      margin-left:10px;
-
-    }
-
-  </style>
+</style>
 
 </head>
 <body>
@@ -110,18 +104,18 @@
 
 <div class="container">
 
-  <input
-    type="text"
-    id="search"
-    class="search-box"
-    placeholder="Search Apps..."
-  >
+<input
+type="text"
+id="search"
+class="search-box"
+placeholder="Search Apps..."
+>
 
-  <h2>⭐ Featured Apps</h2>
+<h2>⭐ Featured Apps</h2>
 
-  <div id="featuredApps"></div>
+<div id="featuredApps"></div>
 
-  <div id="appsContainer"></div>
+<div id="appsContainer"></div>
 
 </div>
 
@@ -144,82 +138,82 @@ document.getElementById("featuredApps");
 
 async function loadApps(){
 
-  appsContainer.innerHTML = "";
-  featuredApps.innerHTML = "";
+appsContainer.innerHTML = "";
+featuredApps.innerHTML = "";
 
-  const querySnapshot =
-  await getDocs(collection(db,"apps"));
+const querySnapshot =
+await getDocs(collection(db,"apps"));
 
-  querySnapshot.forEach((documentItem)=>{
+querySnapshot.forEach((documentItem)=>{
 
-    const app = documentItem.data();
+const app = documentItem.data();
 
-    const appData = encodeURIComponent(
-      JSON.stringify(app)
-    );
+const appData = encodeURIComponent(
+JSON.stringify(app)
+);
 
-    if(app.featured === "yes"){
+if(app.featured === "yes"){
 
-      featuredApps.innerHTML += `
+featuredApps.innerHTML += `
 
-      <div
-      class="app-card"
-      onclick="openDetails('${appData}')"
-      >
+<div
+class="app-card"
+onclick="openDetails('${appData}')"
+>
 
-        <img src="${app.image}">
+<img src="${app.image}">
 
-        <h3>⭐ ${app.name}</h3>
+<h3>⭐ ${app.name}</h3>
 
-        <p>${app.desc}</p>
+<p>${app.desc}</p>
 
-      </div>
+</div>
 
-      `;
+`;
 
-    }
+}
 
-    appsContainer.innerHTML += `
+appsContainer.innerHTML += `
 
-      <div
-      class="app-card"
-      onclick="openDetails('${appData}')"
-      >
+<div
+class="app-card"
+onclick="openDetails('${appData}')"
+>
 
-        <img src="${app.image}">
+<img src="${app.image}">
 
-        <h3>${app.name}</h3>
+<h3>${app.name}</h3>
 
-        <p>${app.desc}</p>
+<p>${app.desc}</p>
 
-        <p>
-        Category:
-        <b>${app.category}</b>
-        </p>
+<p>
+Category:
+<b>${app.category}</b>
+</p>
 
-        <a
-          class="download-btn"
-          href="${app.link}"
-          target="_blank"
-          onclick="event.stopPropagation()"
-        >
-          Download
-        </a>
+<a
+class="download-btn"
+href="${app.link}"
+target="_blank"
+onclick="event.stopPropagation()"
+>
+Download
+</a>
 
-        <button
-          onclick="
-          event.stopPropagation();
-          deleteApp('${documentItem.id}')
-          "
-        >
-          Delete
-        </button>
+<button
+onclick="
+event.stopPropagation();
+deleteApp('${documentItem.id}')
+"
+>
+Delete
+</button>
 
-      </div>
+</div>
 
-    `;
+`;
 
-  });
+});
 
 }
 
@@ -229,46 +223,46 @@ document
 .getElementById("search")
 .addEventListener("input",(e)=>{
 
-  const value =
-  e.target.value.toLowerCase();
+const value =
+e.target.value.toLowerCase();
 
-  const cards =
-  document.querySelectorAll(".app-card");
+const cards =
+document.querySelectorAll(".app-card");
 
-  cards.forEach((card)=>{
+cards.forEach((card)=>{
 
-    const text =
-    card.innerText.toLowerCase();
+const text =
+card.innerText.toLowerCase();
 
-    if(text.includes(value)){
-      card.style.display = "block";
-    }else{
-      card.style.display = "none";
-    }
+if(text.includes(value)){
+card.style.display = "block";
+}else{
+card.style.display = "none";
+}
 
-  });
+});
 
 });
 
 window.openDetails = (appData)=>{
 
-  localStorage.setItem(
-    "selectedApp",
-    decodeURIComponent(appData)
-  );
+localStorage.setItem(
+"selectedApp",
+decodeURIComponent(appData)
+);
 
-  window.location.href =
-  "details.html";
+window.location.href =
+"details.html";
 
 };
 
 window.deleteApp = async(id)=>{
 
-  await deleteDoc(doc(db,"apps",id));
+await deleteDoc(doc(db,"apps",id));
 
-  alert("App Deleted");
+alert("App Deleted");
 
-  loadApps();
+loadApps();
 
 };
 
