@@ -1,0 +1,16 @@
+{
+  "name": "Runstore",
+  "short_name": "Runstore",
+  "start_url": "/runstore-files/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://i.ibb.co/whLK88Yt/216846-removebg-preview.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
