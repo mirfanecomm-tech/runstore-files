@@ -1,79 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Runstore Login</title>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="style.css">
+<title>Runstore Login</title>
+
+<style>
+
+body{
+background:#000;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+font-family:Arial;
+margin:0;
+}
+
+.box{
+background:#111;
+padding:40px;
+border-radius:25px;
+width:85%;
+max-width:400px;
+text-align:center;
+}
+
+h1{
+color:white;
+font-size:45px;
+margin-bottom:30px;
+}
+
+input{
+width:100%;
+padding:18px;
+margin-bottom:20px;
+border-radius:15px;
+border:2px solid orange;
+background:#000;
+color:white;
+font-size:22px;
+box-sizing:border-box;
+}
+
+button{
+width:100%;
+padding:18px;
+border:none;
+border-radius:15px;
+background:#00bfff;
+color:white;
+font-size:24px;
+font-weight:bold;
+}
+
+</style>
 </head>
 <body>
 
-<header>Runstore Login</header>
+<div class="box">
 
-<div class="container">
+<h1>Admin Login</h1>
 
-  <input type="email" id="email" placeholder="Enter Email">
+<input
+type="email"
+id="email"
+placeholder="Email">
 
-  <input type="password" id="password" placeholder="Enter Password">
+<input
+type="password"
+id="password"
+placeholder="Password">
 
-  <button id="signupBtn">Signup</button>
-
-  <button id="loginBtn">Login</button>
+<button onclick="login()">
+Login
+</button>
 
 </div>
 
-<script type="module">
+<script>
 
-import { auth } from './js/firebase.js';
+function login(){
 
-import {
-createUserWithEmailAndPassword,
-signInWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+const email =
+document.getElementById("email").value;
 
-const email = document.getElementById("email");
-const password = document.getElementById("password");
+const password =
+document.getElementById("password").value;
 
-document.getElementById("signupBtn")
-.addEventListener("click", async()=>{
+if(
+email === "admin@gmail.com"
+&&
+password === "123456"
+){
 
-  try{
+localStorage.setItem(
+"adminLoggedIn",
+"true"
+);
 
-    await createUserWithEmailAndPassword(
-      auth,
-      email.value,
-      password.value
-    );
+window.location.href =
+"admin.html";
 
-    alert("Signup Success");
+}else{
 
-  }catch(error){
-    alert(error.message);
-  }
+alert("Wrong Email or Password");
 
-});
+}
 
-document.getElementById("loginBtn")
-.addEventListener("click", async()=>{
-
-  try{
-
-    await signInWithEmailAndPassword(
-      auth,
-      email.value,
-      password.value
-    );
-
-    alert("Login Success");
-
-    window.location.href = "index.html";
-
-  }catch(error){
-    alert(error.message);
-  }
-
-});
+}
 
 </script>
 
