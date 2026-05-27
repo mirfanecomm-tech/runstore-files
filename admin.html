@@ -1,68 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-  content="width=device-width, initial-scale=1.0">
 
-  <title>Admin Panel</title>
+<meta charset="UTF-8">
 
-  <link rel="stylesheet" href="style.css">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Runstore Admin</title>
+
+<style>
+
+body{
+  background:#000;
+  color:white;
+  font-family:Arial;
+  margin:0;
+  padding:20px;
+}
+
+header{
+  text-align:center;
+  font-size:40px;
+  font-weight:bold;
+  margin-bottom:20px;
+}
+
+.container{
+  margin-top:20px;
+}
+
+input{
+
+  width:100%;
+  padding:18px;
+  margin-top:15px;
+  border:none;
+  border-radius:15px;
+  background:#111;
+  color:white;
+  font-size:20px;
+  box-sizing:border-box;
+
+}
+
+button{
+
+  padding:15px 25px;
+  border:none;
+  border-radius:15px;
+  background:#00bfff;
+  color:white;
+  font-size:20px;
+  margin-top:15px;
+  margin-right:10px;
+  cursor:pointer;
+
+}
+
+.app-card{
+
+  background:#111;
+  border-radius:20px;
+  padding:20px;
+  margin-top:20px;
+
+}
+
+.app-card img{
+
+  width:100%;
+  height:250px;
+  object-fit:cover;
+  border-radius:15px;
+
+}
+
+h2{
+  margin-top:40px;
+}
+
+</style>
+
 </head>
+
 <body>
 
 <header>Runstore Admin</header>
 
-<p style="
-text-align:center;
-margin-top:10px;
-">
+<p style="text-align:center;">
 Only Admin Access
 </p>
 
 <div class="container">
 
-  <input
-    type="text"
-    id="appName"
-    placeholder="App Name"
-  >
+<input
+type="text"
+id="appName"
+placeholder="App Name"
+>
 
-  <input
-    type="text"
-    id="appDesc"
-    placeholder="App Description"
-  >
+<input
+type="text"
+id="appDesc"
+placeholder="App Description"
+>
 
-  <input
-    type="text"
-    id="appCategory"
-    placeholder="Category"
-  >
+<input
+type="text"
+id="appCategory"
+placeholder="Category"
+>
 
-  <input
-    type="text"
-    id="appImage"
-    placeholder="Image URL"
-  >
+<input
+type="text"
+id="appImage"
+placeholder="Image URL"
+>
 
-  <input
-    type="text"
-    id="appLink"
-    placeholder="Download Link"
-  >
+<input
+type="text"
+id="appLink"
+placeholder="Download Link"
+>
 
-  <input
-    type="text"
-    id="appFeatured"
-    placeholder="Featured? (yes/no)"
-  >
+<input
+type="text"
+id="appFeatured"
+placeholder="Featured? yes/no"
+>
 
-  <button id="addBtn">
-    Add App
-  </button>
+<button id="addBtn">
+Add App
+</button>
 
 </div>
+
+<h2>Pending Apps</h2>
+
+<div id="pendingApps"></div>
 
 <script type="module">
 
@@ -76,67 +152,199 @@ onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
+
 collection,
-addDoc
+addDoc,
+getDocs,
+deleteDoc,
+doc
+
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 onAuthStateChanged(auth,(user)=>{
 
-  if(!user){
+if(!user){
 
-    alert("Login Required");
+alert("Login Required");
 
-    window.location.href =
-    "login.html";
+window.location.href =
+"login.html";
 
-  }
+}
 
 });
 
-document.getElementById("addBtn")
+document
+.getElementById("addBtn")
 .addEventListener("click", async()=>{
 
-  const name =
-  document.getElementById("appName").value;
+const name =
+document.getElementById("appName").value;
 
-  const desc =
-  document.getElementById("appDesc").value;
+const desc =
+document.getElementById("appDesc").value;
 
-  const category =
-  document.getElementById("appCategory").value;
+const category =
+document.getElementById("appCategory").value;
 
-  const image =
-  document.getElementById("appImage").value;
+const image =
+document.getElementById("appImage").value;
 
-  const link =
-  document.getElementById("appLink").value;
+const link =
+document.getElementById("appLink").value;
 
-  const featured =
-  document.getElementById("appFeatured").value;
+const featured =
+document.getElementById("appFeatured").value;
 
-  try{
+try{
 
-    await addDoc(
-      collection(db,"apps"),
-      {
-        name:name,
-        desc:desc,
-        category:category,
-        image:image,
-        link:link,
-        featured:featured
-      }
-    );
+await addDoc(
+collection(db,"apps"),
+{
 
-    alert("App Added");
+name:name,
+desc:desc,
+category:category,
+image:image,
+link:link,
+featured:featured
 
-  }catch(error){
+}
+);
 
-    alert(error.message);
+alert("App Added");
 
-  }
+}catch(error){
+
+alert(error.message);
+
+}
 
 });
+
+const pendingApps =
+document.getElementById("pendingApps");
+
+async function loadPendingApps(){
+
+pendingApps.innerHTML = "";
+
+const querySnapshot =
+await getDocs(collection(db,"pendingApps"));
+
+querySnapshot.forEach((documentItem)=>{
+
+const app = documentItem.data();
+
+pendingApps.innerHTML += `
+
+<div class="app-card">
+
+<img src="${app.image}">
+
+<h3>${app.name}</h3>
+
+<p>${app.desc}</p>
+
+<p>
+Developer:
+<b>${app.developer}</b>
+</p>
+
+<p>
+Category:
+<b>${app.category}</b>
+</p>
+
+<a
+href="${app.payment}"
+target="_blank"
+>
+
+<button>
+View Payment
+</button>
+
+</a>
+
+<button
+onclick="approveApp(
+'${documentItem.id}',
+'${app.name}',
+'${app.desc}',
+'${app.category}',
+'${app.image}',
+'${app.link}',
+'${app.developer}'
+)"
+>
+Approve
+</button>
+
+<button
+onclick="deletePending(
+'${documentItem.id}'
+)"
+>
+Delete
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+loadPendingApps();
+
+window.approveApp = async(
+id,
+name,
+desc,
+category,
+image,
+link,
+developer
+)=>{
+
+await addDoc(
+collection(db,"apps"),
+{
+
+name:name,
+desc:desc,
+category:category,
+image:image,
+link:link,
+developer:developer,
+featured:"no"
+
+}
+);
+
+await deleteDoc(
+doc(db,"pendingApps",id)
+);
+
+alert("App Approved");
+
+loadPendingApps();
+
+};
+
+window.deletePending = async(id)=>{
+
+await deleteDoc(
+doc(db,"pendingApps",id)
+);
+
+alert("Deleted");
+
+loadPendingApps();
+
+};
 
 </script>
 
