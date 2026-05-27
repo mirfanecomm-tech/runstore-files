@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<title>Upload App</title>
+<title>Upload App - Runstore</title>
 
 <style>
 
@@ -14,9 +16,28 @@ body{
   color:white;
   font-family:Arial;
   padding:20px;
+  margin:0;
 }
 
-input, textarea{
+h1{
+  text-align:center;
+  font-size:40px;
+}
+
+.payment-box{
+  background:#111;
+  padding:20px;
+  border-radius:20px;
+  margin-top:20px;
+  border:2px solid #00bfff;
+}
+
+.payment-box h2{
+  color:#00bfff;
+}
+
+input,
+textarea{
 
   width:100%;
   padding:18px;
@@ -27,39 +48,49 @@ input, textarea{
   color:white;
   font-size:20px;
   box-sizing:border-box;
+  outline:none;
 
+}
+
+textarea{
+  height:120px;
+  resize:none;
 }
 
 button{
 
   width:100%;
   padding:18px;
-  margin-top:20px;
+  margin-top:25px;
   border:none;
   border-radius:15px;
   background:#00bfff;
   color:white;
   font-size:24px;
   font-weight:bold;
+  cursor:pointer;
 
 }
 
-h1{
-  text-align:center;
+button:disabled{
+  opacity:0.6;
 }
 
-.payment-box{
+.note{
 
   background:#111;
-  padding:20px;
-  border-radius:20px;
+  padding:15px;
+  border-radius:15px;
   margin-top:20px;
+  color:#ccc;
+  line-height:1.6;
 
 }
 
 </style>
 
 </head>
+
 <body>
 
 <h1>Upload Your App</h1>
@@ -69,14 +100,24 @@ h1{
 <h2>Pay $5 Upload Fee</h2>
 
 <p>
+
 JazzCash Number:
+
 <br><br>
+
 <b>03072989491</b>
+
 </p>
 
 <p>
-After payment upload screenshot below.
+After payment upload screenshot URL below.
 </p>
+
+</div>
+
+<div class="note">
+
+Your app will be reviewed by Runstore Admin before publishing.
 
 </div>
 
@@ -121,8 +162,11 @@ id="paymentScreenshot"
 placeholder="Payment Screenshot URL"
 >
 
-<button onclick="submitApp()">
+<button id="submitBtn"
+onclick="submitApp()">
+
 Submit App
+
 </button>
 
 <script type="module">
@@ -130,32 +174,59 @@ Submit App
 import { db } from './js/firebase.js';
 
 import {
+
 collection,
 addDoc
+
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 window.submitApp = async()=>{
 
+const submitBtn =
+document.getElementById("submitBtn");
+
 const appName =
-document.getElementById("appName").value;
+document.getElementById("appName").value.trim();
 
 const appDesc =
-document.getElementById("appDesc").value;
+document.getElementById("appDesc").value.trim();
 
 const appCategory =
-document.getElementById("appCategory").value;
+document.getElementById("appCategory").value.trim();
 
 const appImage =
-document.getElementById("appImage").value;
+document.getElementById("appImage").value.trim();
 
 const appLink =
-document.getElementById("appLink").value;
+document.getElementById("appLink").value.trim();
 
 const developer =
-document.getElementById("developer").value;
+document.getElementById("developer").value.trim();
 
 const paymentScreenshot =
-document.getElementById("paymentScreenshot").value;
+document.getElementById("paymentScreenshot").value.trim();
+
+if(
+appName === "" ||
+appDesc === "" ||
+appCategory === "" ||
+appImage === "" ||
+appLink === "" ||
+developer === "" ||
+paymentScreenshot === ""
+){
+
+alert("Please fill all fields");
+
+return;
+
+}
+
+try{
+
+submitBtn.disabled = true;
+
+submitBtn.innerText = "Submitting...";
 
 await addDoc(
 collection(db,"pendingApps"),
@@ -171,12 +242,34 @@ payment: paymentScreenshot,
 
 approved:false,
 
+featured:"no",
+
+downloads:0,
+
 createdAt: Date.now()
 
 }
 );
 
 alert("App Submitted Successfully");
+
+document.getElementById("appName").value = "";
+document.getElementById("appDesc").value = "";
+document.getElementById("appCategory").value = "";
+document.getElementById("appImage").value = "";
+document.getElementById("appLink").value = "";
+document.getElementById("developer").value = "";
+document.getElementById("paymentScreenshot").value = "";
+
+}catch(error){
+
+alert(error.message);
+
+}
+
+submitBtn.disabled = false;
+
+submitBtn.innerText = "Submit App";
 
 };
 
