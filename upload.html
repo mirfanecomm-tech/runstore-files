@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Upload App</title>
+
+<style>
+
+body{
+  background:#000;
+  color:white;
+  font-family:Arial;
+  padding:20px;
+}
+
+input, textarea{
+
+  width:100%;
+  padding:18px;
+  margin-top:15px;
+  border:none;
+  border-radius:15px;
+  background:#111;
+  color:white;
+  font-size:20px;
+  box-sizing:border-box;
+
+}
+
+button{
+
+  width:100%;
+  padding:18px;
+  margin-top:20px;
+  border:none;
+  border-radius:15px;
+  background:#00bfff;
+  color:white;
+  font-size:24px;
+  font-weight:bold;
+
+}
+
+h1{
+  text-align:center;
+}
+
+.payment-box{
+
+  background:#111;
+  padding:20px;
+  border-radius:20px;
+  margin-top:20px;
+
+}
+
+</style>
+
+</head>
+<body>
+
+<h1>Upload Your App</h1>
+
+<div class="payment-box">
+
+<h2>Pay $5 Upload Fee</h2>
+
+<p>
+JazzCash Number:
+<br><br>
+<b>03001234567</b>
+</p>
+
+<p>
+After payment upload screenshot below.
+</p>
+
+</div>
+
+<input
+type="text"
+id="appName"
+placeholder="App Name"
+>
+
+<textarea
+id="appDesc"
+placeholder="App Description"
+></textarea>
+
+<input
+type="text"
+id="appCategory"
+placeholder="Category"
+>
+
+<input
+type="text"
+id="appImage"
+placeholder="App Image URL"
+>
+
+<input
+type="text"
+id="appLink"
+placeholder="APK Download Link"
+>
+
+<input
+type="text"
+id="developer"
+placeholder="Developer Name"
+>
+
+<input
+type="text"
+id="paymentScreenshot"
+placeholder="Payment Screenshot URL"
+>
+
+<button onclick="submitApp()">
+Submit App
+</button>
+
+<script type="module">
+
+import { db } from './js/firebase.js';
+
+import {
+collection,
+addDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+window.submitApp = async()=>{
+
+const appName =
+document.getElementById("appName").value;
+
+const appDesc =
+document.getElementById("appDesc").value;
+
+const appCategory =
+document.getElementById("appCategory").value;
+
+const appImage =
+document.getElementById("appImage").value;
+
+const appLink =
+document.getElementById("appLink").value;
+
+const developer =
+document.getElementById("developer").value;
+
+const paymentScreenshot =
+document.getElementById("paymentScreenshot").value;
+
+await addDoc(
+collection(db,"pendingApps"),
+{
+
+name: appName,
+desc: appDesc,
+category: appCategory,
+image: appImage,
+link: appLink,
+developer: developer,
+payment: paymentScreenshot,
+
+approved:false,
+
+createdAt: Date.now()
+
+}
+);
+
+alert("App Submitted Successfully");
+
+};
+
+</script>
+
+</body>
+</html>
